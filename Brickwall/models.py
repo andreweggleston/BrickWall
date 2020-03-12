@@ -1,5 +1,15 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Float
+from sqlalchemy.inspection import inspect
 from . import db
+
+
+class Serializer(object):
+    def serialize(self):
+        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
+
+    @staticmethod
+    def serialize_list(l):
+        return [m.serialize() for m in l]
 
 
 class Review(db.Model):
@@ -40,6 +50,11 @@ class Company(db.Model):
     company_id = Column(Integer, primary_key=True, nullable=False)
     name = Column(String(55), nullable=False, comment="The name of the company")
     website = Column(String(256), nullable=True, comment="The companies website")
+
+    @property
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 
 class Offer(db.Model):
