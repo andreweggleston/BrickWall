@@ -1,6 +1,0 @@
-flask
-sqlalchemy
-flask_restplus
-pylint
-flask_sqlalchemy
-sqlalchemy
